@@ -1,6 +1,7 @@
 import React from "react";
 import BucketList from "./BucketList";
-import "./style.css";
+//import "./style.css";
+import "./scss_ex.scss";
 
 class App extends React.Component {
   constructor(props) {
