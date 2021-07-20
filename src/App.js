@@ -1,19 +1,25 @@
 import React from "react";
-// BucketList 컴포넌트를 import 해옵니다.
-// import [컴포넌트 명] from [컴포넌트가 있는 파일경로];
-import BucketList from "./BucketList";
 import styled from "styled-components";
 
-// 클래스형 컴포넌트는 이렇게 생겼습니다!
+import { withRouter } from "react-router";
+import { Route, Switch } from "react-router-dom";
+
+import BucketList from "./BucketList";
+import Detail from "./Detail";
+import NotFound from "./NotFound";
+
 class App extends React.Component {
   constructor(props) {
     super(props);
-    // App 컴포넌트의 state를 정의해줍니다.
     this.state = {
       list: ["영화관 가기", "매일 책읽기", "수영 배우기"],
     };
 
     this.text = React.createRef();
+  }
+
+  componentDidMount() {
+    console.log(this.text);
   }
 
   addBucketList = () => {
@@ -23,21 +29,28 @@ class App extends React.Component {
     this.setState({ list: [...list, new_item] });
   };
 
-  componentDidMount() {
-    console.log(this.text);
-    console.log(this.text.current);
-  }
-
-  // 랜더 함수 안에 리액트 엘리먼트를 넣어줍니다!
   render() {
     return (
       <div className="App">
         <Container>
           <Title>내 버킷리스트</Title>
           <Line />
-          {/* 컴포넌트를 넣어줍니다. */}
-          {/* <컴포넌트 명 [props 명]={넘겨줄 것(리스트, 문자열, 숫자, ...)}/> */}
-          <BucketList list={this.state.list} />
+          <Switch>
+            <Route
+              path="/"
+              exact
+              render={(props) => (
+                <BucketList
+                  list={this.state.list}
+                  history={this.props.history}
+                />
+              )}
+            />
+            <Route path="/detail" component={Detail} />
+            <Route
+              render={(props) => <NotFound history={this.props.history} />}
+            />
+          </Switch>
         </Container>
         <Input>
           <input type="text" ref={this.text} />
@@ -78,4 +91,4 @@ const Line = styled.hr`
   border: 1px dotted #ddd;
 `;
 
-export default App;
+export default withRouter(App);
