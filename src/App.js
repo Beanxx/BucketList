@@ -10,6 +10,7 @@ import NotFound from "./NotFound";
 
 import { connect } from "react-redux";
 import { loadBucket, createBucket } from "./redux/modules/bucket";
+import Progress from "./Progress";
 
 const mapStateToProps = (state) => {
   return { bucket_list: state.bucket.list };
@@ -30,9 +31,7 @@ const mapDispatchToProps = (dispatch) => {
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      list: ["영화관 가기", "매일 책읽기", "수영 배우기"],
-    };
+    this.state = {};
 
     this.text = React.createRef();
   }
@@ -51,6 +50,7 @@ class App extends React.Component {
       <div className="App">
         <Container>
           <Title>내 버킷리스트</Title>
+          <Progress />
           <Line />
           <Switch>
             <Route
@@ -73,6 +73,13 @@ class App extends React.Component {
           <input type="text" ref={this.text} />
           <button onClick={this.addBucketList}>추가하기</button>
         </Input>
+        <button
+          onClick={() => {
+            window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+          }}
+        >
+          위로가기
+        </button>
       </div>
     );
   }
