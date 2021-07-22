@@ -8,6 +8,25 @@ import BucketList from "./BucketList";
 import Detail from "./Detail";
 import NotFound from "./NotFound";
 
+import { connect } from "react-redux";
+import { loadBucket, createBucket } from "./redux/modules/bucket";
+
+const mapStateToProps = (state) => {
+  return { bucket_list: state.bucket.list };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    load: () => {
+      dispatch(loadBucket());
+    },
+
+    create: (bucket) => {
+      dispatch(createBucket(bucket));
+    },
+  };
+};
+
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -23,10 +42,8 @@ class App extends React.Component {
   }
 
   addBucketList = () => {
-    let list = this.state.list;
     const new_item = this.text.current.value;
-
-    this.setState({ list: [...list, new_item] });
+    this.props.create(new_item);
   };
 
   render() {
@@ -41,12 +58,12 @@ class App extends React.Component {
               exact
               render={(props) => (
                 <BucketList
-                  list={this.state.list}
+                  bucket_list={this.props.bucket_list}
                   history={this.props.history}
                 />
               )}
             />
-            <Route path="/detail" component={Detail} />
+            <Route path="/detail/:index" component={Detail} />
             <Route
               render={(props) => <NotFound history={this.props.history} />}
             />
@@ -91,4 +108,4 @@ const Line = styled.hr`
   border: 1px dotted #ddd;
 `;
 
-export default withRouter(App);
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(App));
