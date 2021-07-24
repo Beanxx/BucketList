@@ -49,24 +49,13 @@ class App extends React.Component {
     return (
       <div className="App">
         <Container>
-          <Title>내 버킷리스트</Title>
+          <Title>My BucketList</Title>
           <Progress />
           <Line />
           <Switch>
-            <Route
-              path="/"
-              exact
-              render={(props) => (
-                <BucketList
-                  bucket_list={this.props.bucket_list}
-                  history={this.props.history}
-                />
-              )}
-            />
+            <Route path="/" exact component={BucketList} />
             <Route path="/detail/:index" component={Detail} />
-            <Route
-              render={(props) => <NotFound history={this.props.history} />}
-            />
+            <Route component={NotFound} />
           </Switch>
         </Container>
         <Input>
@@ -93,6 +82,30 @@ const Input = styled.div`
   margin: 20px auto;
   border-radius: 5px;
   border: 1px solid #ddd;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  & > * {
+    padding: 10px;
+  }
+
+  & input {
+    border-radius: 5px;
+    margin-right: 10px;
+    border: 1px solid #5d5d5d;
+    width: 60%;
+    &:focus {
+      border: 1px solid #a673ff;
+    }
+  }
+
+  & button {
+    width: 25%;
+    color: #fff;
+    border-radius: 5px;
+    border: 1px solid #6799ff;
+    background-color: #6799ff;
+  }
 `;
 
 const Container = styled.div`
@@ -106,7 +119,7 @@ const Container = styled.div`
 `;
 
 const Title = styled.h1`
-  color: slateblue;
+  color: #5587ed;
   text-align: center;
 `;
 

@@ -6,15 +6,13 @@ import { useDispatch, useSelector } from "react-redux";
 const BucketList = (props) => {
   const bucket_list = useSelector((state) => state.bucket.list);
 
-  console.log(bucket_list);
-
   return (
     <ListStyle>
       {bucket_list.map((list, index) => {
         return (
           <ItemStyle
             className="list_item"
-            color={list.completed ? "orange" : "aliceblue"}
+            completed={list.completed}
             key={index}
             onClick={() => {
               props.history.push("/detail/" + index);
@@ -31,15 +29,19 @@ const BucketList = (props) => {
 const ListStyle = styled.div`
   display: flex;
   flex-direction: column;
-  height: 100%;
+  height: 50vh;
   overflow-x: hidden;
   overflow-y: auto;
+  max-height: 50vh;
 `;
 
 const ItemStyle = styled.div`
   padding: 16px;
   margin: 8px;
-  background-color: ${(props) => props.color};
+  font-size: 16px;
+  color: "#212121";
+  background-color: ${(props) => (props.completed ? "#E8D9FF" : "#eee")};
+  box-sizing: border-box;
 `;
 
 export default BucketList;

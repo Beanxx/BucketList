@@ -8,7 +8,7 @@ const initialState = {
   list: [
     { text: "영화관 가기", completed: false },
     { text: "매일 책읽기", completed: false },
-    { text: "수영 배우기", completed: false },
+    { text: "기타 배우기", completed: false },
   ],
 };
 
