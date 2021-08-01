@@ -12,6 +12,8 @@ import { connect } from "react-redux";
 import { loadBucket, createBucket } from "./redux/modules/bucket";
 import Progress from "./Progress";
 
+import { firestore } from "./firebase";
+
 const mapStateToProps = (state) => {
   return { bucket_list: state.bucket.list };
 };
@@ -37,7 +39,47 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    console.log(this.text);
+    const bucket = firestore.collection("bucket2");
+
+    bucket.doc("bucket_item1").set({ text: "수영 배우기", completed: false });
+
+    // bucket
+    //   .doc("bucket_item")
+    //   .get()
+    //   .then((doc) => {
+    //     if (doc.exists) {
+    //       console.log(doc);
+    //       console.log(doc.data());
+    //       console.log(doc.id);
+    //     }
+    //     console.log(doc.exists);
+    //   });
+
+    // bucket.get().then((docs) => {
+    //   let bucket_data = [];
+
+    //   docs.forEach((doc) => {
+    //     if (doc.exists) {
+    //       bucket_data = [...bucket_data, { id: doc.id, ...doc.data() }];
+    //     }
+    //   });
+
+    //   console.log(bucket_data);
+    // });
+
+    // // bucket.add({ text: "드럼 배우기", completed: false }).then((docRef) => {
+    // //   console.log(docRef);
+    // //   console.log(docRef.id);
+    // // });
+
+    // // bucket.doc("bucket_item").update({ text: "기타 배우기2" });
+
+    // bucket
+    //   .doc("bucket_item2")
+    //   .delete()
+    //   .then((docRef) => {
+    //     console.log("지웠어요!");
+    //   });
   }
 
   addBucketList = () => {
