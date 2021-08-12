@@ -9,23 +9,25 @@ import Detail from "./Detail";
 import NotFound from "./NotFound";
 
 import { connect } from "react-redux";
-import { loadBucket, createBucket } from "./redux/modules/bucket";
+import { loadBucketFB, addBucketFB } from "./redux/modules/bucket";
 import Progress from "./Progress";
+import Spinner from "./Spinner";
 
 import { firestore } from "./firebase";
 
-const mapStateToProps = (state) => {
-  return { bucket_list: state.bucket.list };
-};
+const mapStateToProps = (state) => ({
+  bucket_list: state.bucket.list,
+  is_loaded: state.bucket.is_loaded,
+});
 
 const mapDispatchToProps = (dispatch) => {
   return {
     load: () => {
-      dispatch(loadBucket());
+      dispatch(loadBucketFB());
     },
 
-    create: (bucket) => {
-      dispatch(createBucket(bucket));
+    create: (new_item) => {
+      dispatch(addBucketFB(new_item));
     },
   };
 };
@@ -39,9 +41,11 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    const bucket = firestore.collection("bucket2");
+    this.props.load();
 
-    bucket.doc("bucket_item1").set({ text: "수영 배우기", completed: false });
+    // const bucket = firestore.collection("bucket2");
+
+    // bucket.doc("bucket_item1").set({ text: "수영 배우기", completed: false });
 
     // bucket
     //   .doc("bucket_item")
@@ -90,27 +94,33 @@ class App extends React.Component {
   render() {
     return (
       <div className="App">
-        <Container>
-          <Title>My BucketList</Title>
-          <Progress />
-          <Line />
-          <Switch>
-            <Route path="/" exact component={BucketList} />
-            <Route path="/detail/:index" component={Detail} />
-            <Route component={NotFound} />
-          </Switch>
-        </Container>
-        <Input>
-          <input type="text" ref={this.text} />
-          <button onClick={this.addBucketList}>추가하기</button>
-        </Input>
-        <button
-          onClick={() => {
-            window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
-          }}
-        >
-          위로가기
-        </button>
+        {!this.props.is_loaded ? (
+          <Spinner />
+        ) : (
+          <React.Fragment>
+            <Container>
+              <Title>My BucketList</Title>
+              <Progress />
+              <Line />
+              <Switch>
+                <Route path="/" exact component={BucketList} />
+                <Route path="/detail/:index" component={Detail} />
+                <Route component={NotFound} />
+              </Switch>
+            </Container>
+            <Input>
+              <input type="text" ref={this.text} />
+              <button onClick={this.addBucketList}>추가하기</button>
+            </Input>
+            <button
+              onClick={() => {
+                window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+              }}
+            >
+              위로가기
+            </button>
+          </React.Fragment>
+        )}
       </div>
     );
   }
