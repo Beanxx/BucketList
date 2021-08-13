@@ -162,7 +162,7 @@ const Input = styled.div`
 
 const Container = styled.div`
   max-width: 350px;
-  min-height: 80vh;
+  min-height: 70vh;
   background-color: #fff;
   padding: 16px;
   margin: 20px auto;
